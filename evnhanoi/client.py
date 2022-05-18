@@ -37,7 +37,6 @@ class Client:
 
         # if not response.status_code == 200:
         #     return response.status_code
-
         self.bearer = response.json()["access_token"]
         self.bearer_expiry = datetime.now() + timedelta(seconds=response.json()["expires_in"])
         # print(self.bearer)
@@ -76,7 +75,7 @@ class Client:
 
         if response.status_code != 200:
             return response.json()
-        self.customer = response.json()['data']
+        self.customer = {k: v for k, v in response.json()['data'].items() if v is not None}
         return self.customer
 
     def get_consumption(self, year: int):
